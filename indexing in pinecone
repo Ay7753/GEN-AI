@@ -1,0 +1,38 @@
+import os
+from dotenv import load_dotenv
+from pinecone import Pinecone, ServerlessSpec
+
+# Load env variables
+load_dotenv()
+api_key = os.getenv("PINECONE_API_KEY")
+INDEX_NAME = os.getenv("PINECONE_INDEX_NAME", "pdf-rag-index")
+
+# Create Pinecone client
+pc = Pinecone(api_key=api_key)
+
+# List existing indexes
+indexes = pc.list_indexes().names()
+print("Existing indexes:", indexes)
+
+# Create index if missing
+if INDEX_NAME not in indexes:
+    print(f"Creating index '{INDEX_NAME}' …")
+    pc.create_index(
+        name=INDEX_NAME,
+        dimension=384,  # all-MiniLM-L6-v2 embeddings
+        metric="cosine",
+        spec=ServerlessSpec(cloud="aws", region="us-east-1"),
+    )
+    print(f"Index '{INDEX_NAME}' created ✔")
+else:
+    print(f"Index '{INDEX_NAME}' already exists ✔")
+
+# Connect to index
+index = pc.Index(INDEX_NAME)
+print(f"Connected to index: {INDEX_NAME}")
+
+
+
+
+
+
