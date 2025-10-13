@@ -1,0 +1,2 @@
+LangChain is an open-source Python (and JS) framework designed to help developers build applications powered by Large Language Models (LLMs).
+Instead of just sending a single prompt → getting a single response, LangChain lets you chain together multiple components like prompts, models, tools, and data sources to create complex, context-aware GenAI systems.
